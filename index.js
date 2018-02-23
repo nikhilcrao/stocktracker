@@ -9,6 +9,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
     processV1Request(request, response);
   } else if (request.body.queryResult) {
     processV2Request(request, response);
+  } else if (request.body.cron) {
+    processCronJob(request, response);
   } else {
     console.log('Invalid Request');
     return response.status(400).end('Invalid Webhook Request (expecting v1 or v2 webhook request)');
@@ -118,9 +120,14 @@ function processV1Request (request, response) {
   });
   }
 
-  function testCronjob() {
+  function processCronJob(request, response) {
+    let responseToUser = {
+      status: 'success'
+    };
+    sendResponse(responseToUser);
   }
-    // Function to send correctly formatted Google Assistant responses to Dialogflow which are then sent to the user
+
+  // Function to send correctly formatted Google Assistant responses to Dialogflow which are then sent to the user
   function sendGoogleResponse (responseToUser) {
     if (typeof responseToUser === 'string') {
       app.ask(responseToUser); // Google Assistant response
